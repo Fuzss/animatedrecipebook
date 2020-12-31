@@ -1,4 +1,4 @@
-# Animated Recipe Button
+# Animated Recipe Book
 
 A Minecraft mod. Downloads can be found on CurseForge.
 
