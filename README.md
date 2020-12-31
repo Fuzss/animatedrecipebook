@@ -2,4 +2,4 @@
 
 A Minecraft mod. Downloads can be found on CurseForge.
 
-![AnimatedRecipeButton](https://i.imgur.com/5WVbjOQ.png)
+![](https://i.imgur.com/FoAX2Xj.png)

@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "package": "com.fuzs.animatedrecipebook.mixin",
+  "refmap": "animatedrecipebook.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+    "accessor.IButtonAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
