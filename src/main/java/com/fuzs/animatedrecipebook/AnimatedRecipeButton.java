@@ -5,9 +5,13 @@ import net.minecraft.client.gui.recipebook.IRecipeShownListener;
 import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.network.FMLNetworkConstants;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,6 +26,9 @@ public class AnimatedRecipeButton {
     public AnimatedRecipeButton() {
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onClientSetup);
+
+        // clientSideOnly = true
+        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (remote, isServer) -> true));
     }
 
     private void onClientSetup(final FMLClientSetupEvent evt) {
