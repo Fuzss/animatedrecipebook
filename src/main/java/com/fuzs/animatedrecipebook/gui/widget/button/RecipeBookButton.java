@@ -1,7 +1,7 @@
 package com.fuzs.animatedrecipebook.gui.widget.button;
 
 import com.fuzs.animatedrecipebook.AnimatedRecipeButton;
-import com.fuzs.animatedrecipebook.mixin.accessor.IButtonAccessor;
+import com.fuzs.animatedrecipebook.mixin.client.accessor.IButtonAccessor;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;

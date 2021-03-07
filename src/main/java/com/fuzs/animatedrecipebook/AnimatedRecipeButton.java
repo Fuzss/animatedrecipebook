@@ -1,8 +1,10 @@
 package com.fuzs.animatedrecipebook;
 
 import com.fuzs.animatedrecipebook.gui.widget.button.RecipeBookButton;
+import com.fuzs.animatedrecipebook.mixin.client.accessor.IImageButtonAccessor;
 import net.minecraft.client.gui.recipebook.IRecipeShownListener;
 import net.minecraft.client.gui.widget.button.ImageButton;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ExtensionPoint;
@@ -23,6 +25,8 @@ public class AnimatedRecipeButton {
     public static final String NAME = "Animated Recipe Book";
     public static final Logger LOGGER = LogManager.getLogger(AnimatedRecipeButton.NAME);
 
+    private static final ResourceLocation RECIPE_BUTTON_TEXTURE = new ResourceLocation("textures/gui/recipe_button.png");
+
     public AnimatedRecipeButton() {
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onClientSetup);
@@ -40,7 +44,11 @@ public class AnimatedRecipeButton {
 
         if (evt.getGui() instanceof IRecipeShownListener) {
 
-            evt.getWidgetList().stream().filter(widget -> widget instanceof ImageButton).findFirst().ifPresent(widget -> {
+            evt.getWidgetList().stream()
+                    .filter(widget -> widget instanceof ImageButton)
+                    .filter(widget -> ((IImageButtonAccessor) widget).getResourceLocation().equals(RECIPE_BUTTON_TEXTURE))
+                    .findFirst()
+                    .ifPresent(widget -> {
 
                 evt.removeWidget(widget);
                 evt.addWidget(new RecipeBookButton((ImageButton) widget, (IRecipeShownListener) evt.getGui()));

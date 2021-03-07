@@ -1,4 +1,4 @@
-package com.fuzs.animatedrecipebook.mixin.accessor;
+package com.fuzs.animatedrecipebook.mixin.client.accessor;
 
 import net.minecraft.client.gui.widget.button.Button;
 import org.spongepowered.asm.mixin.Mixin;

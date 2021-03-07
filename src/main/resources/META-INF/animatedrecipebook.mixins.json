@@ -7,7 +7,8 @@
   "mixins": [
   ],
   "client": [
-    "accessor.IButtonAccessor"
+    "client.accessor.IButtonAccessor",
+    "client.accessor.IImageButtonAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
