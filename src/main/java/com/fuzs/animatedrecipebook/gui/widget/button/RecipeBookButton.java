@@ -2,15 +2,12 @@ package com.fuzs.animatedrecipebook.gui.widget.button;
 
 import com.fuzs.animatedrecipebook.AnimatedRecipeButton;
 import com.fuzs.animatedrecipebook.mixin.client.accessor.IButtonAccessor;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.recipebook.IRecipeShownListener;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nonnull;
 
 public class RecipeBookButton extends ImageButton {
 
@@ -34,7 +31,7 @@ public class RecipeBookButton extends ImageButton {
     }
 
     @Override
-    public void renderButton(@Nonnull MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderButton(int mouseX, int mouseY, float partialTicks) {
 
         if (this.visible) {
 
@@ -52,7 +49,7 @@ public class RecipeBookButton extends ImageButton {
             this.mc.getTextureManager().bindTexture(BOOK_BUTTON);
             RenderSystem.enableDepthTest();
             // vanilla position usually isn't centered in relation to surroundings, + 1 will fix that
-            blit(matrixStack, this.x + 1, this.y, posX, posY, this.width, this.height, 256, 256);
+            blit(this.x + 1, this.y, posX, posY, this.width, this.height, 256, 256);
         }
     }
 
