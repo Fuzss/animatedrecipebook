@@ -46,7 +46,7 @@ public class SlotUtil {
 
     public static void cycleSlotsRight(Player player, SlotSwapper slotSwapper) {
         int currentSlot = player.getInventory().selected + 9;
-        while (Inventory.isHotbarSlot(currentSlot)) {
+        while (!Inventory.isHotbarSlot(currentSlot)) {
             int nextSlot = SlotUtil.cycleSlotRight(player, currentSlot);
             slotSwapper.swapSlots(player, currentSlot, nextSlot);
             currentSlot = nextSlot;
@@ -59,7 +59,7 @@ public class SlotUtil {
 
     public static void cycleSlotsLeft(Player player, SlotSwapper slotSwapper) {
         int currentSlot = player.getInventory().selected + 27;
-        while (Inventory.isHotbarSlot(currentSlot)) {
+        while (!Inventory.isHotbarSlot(currentSlot)) {
             int nextSlot = SlotUtil.cycleSlotLeft(player, currentSlot);
             slotSwapper.swapSlots(player, currentSlot, nextSlot);
             currentSlot = nextSlot;

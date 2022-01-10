@@ -39,8 +39,8 @@ public class SlotRendererHandler {
             final int selected = inventory.selected;
             ItemStack mainStack = inventory.items.get(selected);
             HumanoidArm humanoidarm = player.getMainArm().getOpposite();
-            int leftSlot = getLeftSlot(inventory, selected);
-            int rightSlot = getRightSlot(inventory, selected);
+            int leftSlot = getRightSlot(inventory, selected);
+            int rightSlot = getLeftSlot(inventory, selected);
             if (humanoidarm == HumanoidArm.LEFT) {
                 if (leftSlot == -1) return;
             } else {
@@ -49,11 +49,11 @@ public class SlotRendererHandler {
             ItemStack leftStack = inventory.items.get(leftSlot);
             ItemStack rightStack = inventory.items.get(rightSlot);
             if (humanoidarm == HumanoidArm.LEFT) {
-                if (leftSlot >= rightSlot) {
+                if (leftSlot < rightSlot) {
                     rightStack = ItemStack.EMPTY;
                 }
             } else {
-                if (leftSlot >= rightSlot) {
+                if (leftSlot < rightSlot) {
                     leftStack = ItemStack.EMPTY;
                 }
             }
