@@ -2,6 +2,7 @@ package fuzs.completionistsindex.client;
 
 import fuzs.completionistsindex.CompletionistsIndex;
 import fuzs.completionistsindex.client.handler.KeyBindingHandler;
+import fuzs.completionistsindex.client.handler.MouseScrollHandler;
 import fuzs.completionistsindex.client.handler.PauseMenuHandler;
 import fuzs.completionistsindex.client.handler.SlotRendererHandler;
 import fuzs.puzzleslib.PuzzlesLib;
@@ -25,6 +26,8 @@ public class CompletionistsIndexClient {
         final KeyBindingHandler keyBindingHandler = new KeyBindingHandler();
         keyBindingHandler.init();
         MinecraftForge.EVENT_BUS.addListener(keyBindingHandler::onClientTick);
+        final MouseScrollHandler mouseScrollHandler = new MouseScrollHandler();
+        MinecraftForge.EVENT_BUS.addListener(mouseScrollHandler::onMouseScroll);
     }
 
     private static void registerHandlers() {

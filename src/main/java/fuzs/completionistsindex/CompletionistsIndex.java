@@ -1,7 +1,7 @@
 package fuzs.completionistsindex;
 
 import fuzs.completionistsindex.config.ClientConfig;
-import fuzs.completionistsindex.network.client.C2SCycleSlotMessage;
+import fuzs.completionistsindex.network.client.C2SCycleSlotsMessage;
 import fuzs.puzzleslib.config.AbstractConfig;
 import fuzs.puzzleslib.config.ConfigHolder;
 import fuzs.puzzleslib.config.ConfigHolderImpl;
@@ -31,6 +31,6 @@ public class CompletionistsIndex {
     }
 
     private static void registerMessages() {
-        NETWORK.register(C2SCycleSlotMessage.class, C2SCycleSlotMessage::new, MessageDirection.TO_SERVER);
+        NETWORK.register(C2SCycleSlotsMessage.class, C2SCycleSlotsMessage::new, MessageDirection.TO_SERVER);
     }
 }

@@ -40,14 +40,24 @@ public class SlotRendererHandler {
             ItemStack mainStack = inventory.items.get(selected);
             HumanoidArm humanoidarm = player.getMainArm().getOpposite();
             int leftSlot = getLeftSlot(inventory, selected);
-            if (leftSlot == -1) return;
-            ItemStack leftStack = inventory.items.get(leftSlot);
             int rightSlot = getRightSlot(inventory, selected);
-            ItemStack rightStack = ItemStack.EMPTY;
-            if (leftSlot < rightSlot) {
-                rightStack = inventory.items.get(rightSlot);
+            if (humanoidarm == HumanoidArm.LEFT) {
+                if (leftSlot == -1) return;
+            } else {
+                if (rightSlot == -1) return;
             }
-            int screenCenter = screenWidth / 2;
+            ItemStack leftStack = inventory.items.get(leftSlot);
+            ItemStack rightStack = inventory.items.get(rightSlot);
+            if (humanoidarm == HumanoidArm.LEFT) {
+                if (leftSlot >= rightSlot) {
+                    rightStack = ItemStack.EMPTY;
+                }
+            } else {
+                if (leftSlot >= rightSlot) {
+                    leftStack = ItemStack.EMPTY;
+                }
+            }
+            final int screenCenter = screenWidth / 2;
             if (humanoidarm == HumanoidArm.LEFT) {
                 gui.blit(poseStack, screenCenter + 91, screenHeight - 23, 53, 22, 29, 24);
                 if (!rightStack.isEmpty()) {
@@ -56,10 +66,10 @@ public class SlotRendererHandler {
                 gui.blit(poseStack, screenCenter + 91 + 28, screenHeight - 22, 21, 0, 20, 22);
                 gui.blit(poseStack, screenCenter + 91 + 26, screenHeight - 22 - 1, 0, 22, 24, 24);
             } else {
-                gui.blit(poseStack, screenCenter - 91 - 29 - 40, screenHeight - 23, 24, 22, 29, 24);
-                if (!rightStack.isEmpty()) {
-                    gui.blit(poseStack, screenCenter - 91 - 29, screenHeight - 23, 24, 22, 29, 24);
+                if (!leftStack.isEmpty()) {
+                    gui.blit(poseStack, screenCenter - 91 - 29 - 40, screenHeight - 23, 24, 22, 29, 24);
                 }
+                gui.blit(poseStack, screenCenter - 91 - 29, screenHeight - 23, 24, 22, 29, 24);
                 gui.blit(poseStack, screenCenter - 91 - 29 - 19, screenHeight - 22, 21, 0, 20, 22);
                 gui.blit(poseStack, screenCenter - 91 - 29 - 21, screenHeight - 22 - 1, 0, 22, 24, 24);
             }
