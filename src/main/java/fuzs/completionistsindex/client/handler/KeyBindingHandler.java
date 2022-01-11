@@ -30,19 +30,21 @@ public class KeyBindingHandler {
 
     private void handleKeybinds(Player player) {
         while (this.keyCycleLeft.consumeClick()) {
-            if (!player.isSpectator() && SlotUtil.cycleHotbarSlotLeft(player) != -1) {
+            if (!player.isSpectator()) {
 //                SlotUtil.cycleSlotsLeft(player);
 //                CompletionistsIndex.NETWORK.sendToServer(new C2SCycleSlotsMessage(false));
-                SlotUtil.cycleSlotsLeft(player, KeyBindingHandler::swapSlots);
-                setPopTimeColumn(player);
+                if (SlotUtil.cycleSlotsLeft(player, KeyBindingHandler::swapSlots)) {
+                    setPopTimeColumn(player);
+                }
             }
         }
         while (this.keyCycleRight.consumeClick()) {
-            if (!player.isSpectator() && SlotUtil.cycleHotbarSlotRight(player) != -1) {
+            if (!player.isSpectator()) {
 //                SlotUtil.cycleSlotsRight(player);
 //                CompletionistsIndex.NETWORK.sendToServer(new C2SCycleSlotsMessage(true));
-                SlotUtil.cycleSlotsRight(player, KeyBindingHandler::swapSlots);
-                setPopTimeColumn(player);
+                if (SlotUtil.cycleSlotsRight(player, KeyBindingHandler::swapSlots)) {
+                    setPopTimeColumn(player);
+                }
             }
         }
     }

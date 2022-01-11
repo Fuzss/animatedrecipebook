@@ -35,13 +35,11 @@ public class C2SCycleSlotsMessage implements Message {
         public void handle(C2SCycleSlotsMessage packet, Player player, Object gameInstance) {
             if (!player.isSpectator()) {
                 if (packet.cycleRight) {
-                    if (SlotUtil.cycleHotbarSlotRight(player) != -1) {
-                        SlotUtil.cycleSlotsRight(player);
+                    if (SlotUtil.cycleSlotsRight(player)) {
                         player.stopUsingItem();
                     }
                 } else {
-                    if (SlotUtil.cycleHotbarSlotLeft(player) != -1) {
-                        SlotUtil.cycleSlotsLeft(player);
+                    if (SlotUtil.cycleSlotsLeft(player)) {
                         player.stopUsingItem();
                     }
                 }

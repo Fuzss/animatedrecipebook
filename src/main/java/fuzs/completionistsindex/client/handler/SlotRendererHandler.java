@@ -49,11 +49,11 @@ public class SlotRendererHandler {
             ItemStack leftStack = inventory.items.get(leftSlot);
             ItemStack rightStack = inventory.items.get(rightSlot);
             if (humanoidarm == HumanoidArm.LEFT) {
-                if (leftSlot < rightSlot) {
+                if (leftSlot <= rightSlot) {
                     rightStack = ItemStack.EMPTY;
                 }
             } else {
-                if (leftSlot < rightSlot) {
+                if (leftSlot <= rightSlot) {
                     leftStack = ItemStack.EMPTY;
                 }
             }

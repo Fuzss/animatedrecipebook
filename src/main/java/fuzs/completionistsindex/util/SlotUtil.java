@@ -40,30 +40,38 @@ public class SlotUtil {
         return leftSlot;
     }
 
-    public static void cycleSlotsRight(Player player) {
-        cycleSlotsRight(player, SlotUtil::swapSlots);
+    public static boolean cycleSlotsRight(Player player) {
+        return cycleSlotsRight(player, SlotUtil::swapSlots);
     }
 
-    public static void cycleSlotsRight(Player player, SlotSwapper slotSwapper) {
-        int currentSlot = player.getInventory().selected + 9;
-        while (!Inventory.isHotbarSlot(currentSlot)) {
-            int nextSlot = SlotUtil.cycleSlotRight(player, currentSlot);
-            slotSwapper.swapSlots(player, currentSlot, nextSlot);
-            currentSlot = nextSlot;
+    public static boolean cycleSlotsRight(Player player, SlotSwapper slotSwapper) {
+        if (SlotUtil.cycleHotbarSlotRight(player) != -1) {
+            int currentSlot = SlotUtil.cycleSlotRight(player, player.getInventory().selected);
+            while (!Inventory.isHotbarSlot(currentSlot)) {
+                int nextSlot = SlotUtil.cycleSlotRight(player, currentSlot);
+                slotSwapper.swapSlots(player, currentSlot, nextSlot);
+                currentSlot = nextSlot;
+            }
+            return true;
         }
+        return false;
     }
 
-    public static void cycleSlotsLeft(Player player) {
-        cycleSlotsLeft(player, SlotUtil::swapSlots);
+    public static boolean cycleSlotsLeft(Player player) {
+        return cycleSlotsLeft(player, SlotUtil::swapSlots);
     }
 
-    public static void cycleSlotsLeft(Player player, SlotSwapper slotSwapper) {
-        int currentSlot = player.getInventory().selected + 27;
-        while (!Inventory.isHotbarSlot(currentSlot)) {
-            int nextSlot = SlotUtil.cycleSlotLeft(player, currentSlot);
-            slotSwapper.swapSlots(player, currentSlot, nextSlot);
-            currentSlot = nextSlot;
+    public static boolean cycleSlotsLeft(Player player, SlotSwapper slotSwapper) {
+        if (SlotUtil.cycleHotbarSlotLeft(player) != -1) {
+            int currentSlot = SlotUtil.cycleSlotLeft(player, player.getInventory().selected);
+            while (!Inventory.isHotbarSlot(currentSlot)) {
+                int nextSlot = SlotUtil.cycleSlotLeft(player, currentSlot);
+                slotSwapper.swapSlots(player, currentSlot, nextSlot);
+                currentSlot = nextSlot;
+            }
+            return true;
         }
+        return false;
     }
 
     private static void swapSlots(Player player, int currentSlot, int nextSlot) {
