@@ -1,10 +1,7 @@
 package fuzs.completionistsindex.client;
 
 import fuzs.completionistsindex.CompletionistsIndex;
-import fuzs.completionistsindex.client.handler.KeyBindingHandler;
-import fuzs.completionistsindex.client.handler.MouseScrollHandler;
-import fuzs.completionistsindex.client.handler.PauseMenuHandler;
-import fuzs.completionistsindex.client.handler.SlotRendererHandler;
+import fuzs.completionistsindex.client.handler.*;
 import fuzs.completionistsindex.client.model.WingsModel;
 import fuzs.completionistsindex.client.registry.ModClientRegistry;
 import fuzs.completionistsindex.client.renderer.entity.layers.WingsLayer;
@@ -43,6 +40,8 @@ public class CompletionistsIndexClient {
         final PauseMenuHandler pauseMenuHandler = new PauseMenuHandler();
         MinecraftForge.EVENT_BUS.addListener(pauseMenuHandler::onClientTick);
         MinecraftForge.EVENT_BUS.addListener(pauseMenuHandler::onInitGui);
+        final FirstPersonWingsHandler firstPersonWingsHandler = new FirstPersonWingsHandler();
+        MinecraftForge.EVENT_BUS.addListener(firstPersonWingsHandler::onRenderHand);
     }
 
     @SubscribeEvent

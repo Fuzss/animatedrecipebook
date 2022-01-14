@@ -1,4 +1,13 @@
 {
   "key.cycleLeft": "Cycle Hotbar Slot Left",
-  "key.cycleRight": "Cycle Hotbar Slot Right"
+  "key.cycleRight": "Cycle Hotbar Slot Right",
+  "item.completionistsindex.butterfly_wings": "Butterfly Ring of Flight",
+  "item.completionistsindex.chicken_wings": "Chicken Ring of Flight",
+  "item.completionistsindex.dragon_wings": "Dragon Ring of Flight",
+  "item.completionistsindex.fairy_wings": "Fairy Ring of Flight",
+  "item.completionistsindex.angel_wings": "Angel Ring of Flight",
+  "item.completionistsindex.invisible_wings": "Ring of Flight",
+  "completionistsindex.advancements.get_wings.title": "Rings Of Flight",
+  "completionistsindex.advancements.get_wings.description": "Construct a ring of flight",
+  "completionistsindex.advancements.angle_wings.title": "Like An Angle"
 }

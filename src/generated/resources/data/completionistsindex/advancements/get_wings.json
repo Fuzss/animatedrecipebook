@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "completionistsindex:angel_wings"
+    },
+    "title": {
+      "translate": "completionistsindex.advancements.get_wings.title"
+    },
+    "description": {
+      "translate": "completionistsindex.advancements.get_wings.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "get_wings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "completionistsindex:wings"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_wings"
+    ]
+  ]
+}

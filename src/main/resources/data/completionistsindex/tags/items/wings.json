@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "completionistsindex:butterfly_wings",
+    "completionistsindex:chicken_wings",
+    "completionistsindex:dragon_wings",
+    "completionistsindex:fairy_wings",
+    "completionistsindex:angel_wings",
+    "completionistsindex:invisible_wings"
+  ]
+}

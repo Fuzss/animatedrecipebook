@@ -59,6 +59,9 @@ minecraft {
             args '--mixin.config', "META-INF/${project.modid}.mixins.json".toString()
             properties 'mixin.env.remapRefMap': 'true', 'mixin.env.refMapRemappingFile': "${project.projectDir}/build/createSrgToMcp/output.srg".toString()
         }
+        data {
+            args '--mod', "${project.modid}", '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+        }
     }
 }
 

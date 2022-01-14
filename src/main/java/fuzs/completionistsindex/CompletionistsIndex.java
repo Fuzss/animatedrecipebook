@@ -1,15 +1,24 @@
 package fuzs.completionistsindex;
 
 import fuzs.completionistsindex.config.ClientConfig;
+import fuzs.completionistsindex.data.ModAdvancementProvider;
+import fuzs.completionistsindex.data.ModItemTagsProvider;
+import fuzs.completionistsindex.data.ModRecipeProvider;
+import fuzs.completionistsindex.handler.FlightHandler;
 import fuzs.completionistsindex.network.client.C2SCycleSlotsMessage;
+import fuzs.completionistsindex.registry.ModRegistry;
 import fuzs.puzzleslib.config.AbstractConfig;
 import fuzs.puzzleslib.config.ConfigHolder;
 import fuzs.puzzleslib.config.ConfigHolderImpl;
 import fuzs.puzzleslib.network.MessageDirection;
 import fuzs.puzzleslib.network.NetworkHandler;
+import net.minecraft.data.DataGenerator;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,10 +36,26 @@ public class CompletionistsIndex {
     @SubscribeEvent
     public static void onConstructMod(final FMLConstructModEvent evt) {
         ((ConfigHolderImpl<?, ?>) CONFIG).addConfigs(MOD_ID);
+        ModRegistry.touch();
+        registerHandlers();
         registerMessages();
+    }
+
+    private static void registerHandlers() {
+        final FlightHandler handler = new FlightHandler();
+        MinecraftForge.EVENT_BUS.addListener(handler::onPlayerTick);
     }
 
     private static void registerMessages() {
         NETWORK.register(C2SCycleSlotsMessage.class, C2SCycleSlotsMessage::new, MessageDirection.TO_SERVER);
+    }
+
+    @SubscribeEvent
+    public static void onGatherData(final GatherDataEvent evt) {
+        DataGenerator generator = evt.getGenerator();
+        final ExistingFileHelper existingFileHelper = evt.getExistingFileHelper();
+        generator.addProvider(new ModRecipeProvider(generator));
+        generator.addProvider(new ModAdvancementProvider(generator, existingFileHelper));
+        generator.addProvider(new ModItemTagsProvider(generator, existingFileHelper));
     }
 }
