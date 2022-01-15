@@ -22,7 +22,7 @@ public class ModAdvancementProvider extends AdvancementProvider {
     @Override
     protected void registerAdvancements(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) {
         Advancement advancement = Advancement.Builder.advancement()
-                .display(ModRegistry.ANGEL_WINGS_ITEM.get(), new TranslatableComponent("completionistsindex.advancements.get_wings.title"), new TranslatableComponent("completionistsindex.advancements.get_wings.description"), new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"), FrameType.TASK, true, true, false)
+                .display(ModRegistry.INVISIBLE_WINGS_ITEM.get(), new TranslatableComponent("completionistsindex.advancements.get_wings.title"), new TranslatableComponent("completionistsindex.advancements.get_wings.description"), new ResourceLocation(CompletionistsIndex.MOD_ID, "textures/gui/advancements/backgrounds/gold_block.png"), FrameType.TASK, true, true, false)
                 .addCriterion("get_wings", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(ModRegistry.WINGS_TAG).build()))
                 .build(new ResourceLocation(CompletionistsIndex.MOD_ID, "get_wings"));
         consumer.accept(advancement);

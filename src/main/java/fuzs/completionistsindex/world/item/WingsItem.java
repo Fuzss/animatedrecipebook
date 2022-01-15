@@ -1,6 +1,9 @@
 package fuzs.completionistsindex.world.item;
 
 import fuzs.completionistsindex.CompletionistsIndex;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -10,17 +13,15 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Wearable;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Locale;
 
-public class WingsItem extends Item implements Wearable {
+public class WingsItem extends Item implements Vanishable {
     private final WingsType wingsType;
 
     public WingsItem(WingsType wingsType, Properties p_41383_) {
@@ -45,6 +46,11 @@ public class WingsItem extends Item implements Wearable {
         } else {
             return InteractionResultHolder.fail(itemstack);
         }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack p_43094_, @Nullable Level p_43095_, List<Component> p_43096_, TooltipFlag p_43097_) {
+        p_43096_.add(new TranslatableComponent("completionistsindex.tooltip.slot", new TranslatableComponent("completionistsindex.tooltip.offhand").withStyle(ChatFormatting.YELLOW)).withStyle(ChatFormatting.GOLD));
     }
 
     @Override

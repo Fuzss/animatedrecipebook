@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-public class FlightHandler {
+public class RingFlightHandler {
     @SubscribeEvent
     public void onPlayerTick(final TickEvent.PlayerTickEvent evt) {
         if (evt.phase != TickEvent.Phase.END) return;

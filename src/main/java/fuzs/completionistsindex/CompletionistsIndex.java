@@ -4,7 +4,7 @@ import fuzs.completionistsindex.config.ClientConfig;
 import fuzs.completionistsindex.data.ModAdvancementProvider;
 import fuzs.completionistsindex.data.ModItemTagsProvider;
 import fuzs.completionistsindex.data.ModRecipeProvider;
-import fuzs.completionistsindex.handler.FlightHandler;
+import fuzs.completionistsindex.handler.RingFlightHandler;
 import fuzs.completionistsindex.network.client.C2SCycleSlotsMessage;
 import fuzs.completionistsindex.registry.ModRegistry;
 import fuzs.puzzleslib.config.AbstractConfig;
@@ -42,7 +42,7 @@ public class CompletionistsIndex {
     }
 
     private static void registerHandlers() {
-        final FlightHandler handler = new FlightHandler();
+        final RingFlightHandler handler = new RingFlightHandler();
         MinecraftForge.EVENT_BUS.addListener(handler::onPlayerTick);
     }
 

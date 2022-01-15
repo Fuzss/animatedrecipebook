@@ -1,6 +1,8 @@
 {
   "key.cycleLeft": "Cycle Hotbar Slot Left",
   "key.cycleRight": "Cycle Hotbar Slot Right",
+  "completionistsindex.tooltip.slot": "Slot: %s",
+  "completionistsindex.tooltip.offhand": "Offhand",
   "item.completionistsindex.butterfly_wings": "Butterfly Ring of Flight",
   "item.completionistsindex.chicken_wings": "Chicken Ring of Flight",
   "item.completionistsindex.dragon_wings": "Dragon Ring of Flight",
