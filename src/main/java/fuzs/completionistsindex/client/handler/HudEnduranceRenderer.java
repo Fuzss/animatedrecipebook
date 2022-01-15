@@ -1,98 +1,80 @@
 package fuzs.completionistsindex.client.handler;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import fuzs.completionistsindex.CompletionistsIndex;
+import fuzs.completionistsindex.world.entity.EnduranceEntity;
+import fuzs.completionistsindex.world.item.WingsItem;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-
-import java.util.Random;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 
 public class HudEnduranceRenderer {
-    protected final Random random = new Random();
-    protected int lastHealth;
-    protected int displayHealth;
-    protected long lastHealthTime;
-    protected long healthBlinkTime;
+    public static final ResourceLocation GUI_ICONS_LOCATION = new ResourceLocation(CompletionistsIndex.MOD_ID, "textures/gui/icons.png");
 
-    public void renderPlayerHealth(Minecraft minecraft, Gui gui, PoseStack poseStack, int screenWidth, int screenHeight) {
+    private int lastEndurance;
+    private int displayEndurance;
+    private long lastEnduranceTime;
+    private long enduranceBlinkTime;
+
+    public void renderPlayerEndurance(Minecraft minecraft, ForgeIngameGui gui, PoseStack poseStack, int screenWidth, int screenHeight) {
         Player player = this.getCameraPlayer(minecraft);
         if (player == null) return;
+        EnduranceEntity endurance = (EnduranceEntity) player;
+        if (!(player.getOffhandItem().getItem() instanceof WingsItem) || !CompletionistsIndex.CONFIG.client().alwaysRenderEnduranceBar && endurance.isEnduranceFull()) return;
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderTexture(0, GUI_ICONS_LOCATION);
+        minecraft.getProfiler().push(new ResourceLocation(CompletionistsIndex.MOD_ID, "endurance").toString());
+        RenderSystem.enableBlend();
         int tickCount = gui.getGuiTicks();
-        int playerHealth = Mth.ceil(player.getHealth());
-        boolean mayBlink = this.healthBlinkTime > (long) tickCount && (this.healthBlinkTime - (long) tickCount) / 3L % 2L == 1L;
+        int playerEndurance = Mth.ceil(endurance.getEndurance() * 20.0F / endurance.getMaxEndurance());
+        boolean blinking = this.enduranceBlinkTime > (long) tickCount && (this.enduranceBlinkTime - (long) tickCount) / 3L % 2L == 1L;
         long millis = Util.getMillis();
-        if (playerHealth < this.lastHealth && player.invulnerableTime > 0) {
-            this.lastHealthTime = millis;
-            this.healthBlinkTime = tickCount + 20;
-        } else if (playerHealth > this.lastHealth && player.invulnerableTime > 0) {
-            this.lastHealthTime = millis;
-            this.healthBlinkTime = tickCount + 10;
+        if (playerEndurance < this.lastEndurance && player.invulnerableTime > 0) {
+            this.lastEnduranceTime = millis;
+            this.enduranceBlinkTime = tickCount + 20;
+        } else if (playerEndurance > this.lastEndurance && player.invulnerableTime > 0) {
+            this.lastEnduranceTime = millis;
+            this.enduranceBlinkTime = tickCount + 10;
         }
-
-        if (millis - this.lastHealthTime > 1000L) {
-            this.displayHealth = playerHealth;
-            this.lastHealthTime = millis;
+        if (millis - this.lastEnduranceTime > 1000L) {
+            this.displayEndurance = playerEndurance;
+            this.lastEnduranceTime = millis;
         }
-
-        this.lastHealth = playerHealth;
-        int displayHealth = this.displayHealth;
-        this.random.setSeed(tickCount * 312871);
-        int startX = screenWidth / 2 - 91;
-        int startY = screenHeight - 39;
-        float maxHealth = Math.max((float)player.getAttributeValue(Attributes.MAX_HEALTH), (float)Math.max(displayHealth, playerHealth));
-        int playerAbsorption = Mth.ceil(player.getAbsorptionAmount());
-        int totalHearts = Mth.ceil((maxHealth + (float)playerAbsorption) / 2.0F / 10.0F);
-        int heartColumns = Math.max(10 - (totalHearts - 2), 3);
-        int jumpOffsetY = -1;
-        this.renderHearts(gui, poseStack, player, startX, startY, heartColumns, jumpOffsetY, maxHealth, playerHealth, displayHealth, playerAbsorption, mayBlink);
+        this.lastEndurance = playerEndurance;
+        int startX = screenWidth / 2 + 91;
+        int startY = screenHeight - gui.right_height;
+        gui.right_height += 10;
+        this.renderWings(gui, poseStack, startX, startY, playerEndurance, this.displayEndurance, blinking);
+        minecraft.getProfiler().pop();
+        RenderSystem.disableBlend();
     }
 
-    protected void renderHearts(Gui gui, PoseStack poseStack, Player player, int startX, int startY, int heartColumns, int heartJumpOffset, float maxHealth, int playerHealth, int displayHealth, int playerAbsorption, boolean blinking) {
-        int normalHearts = Mth.ceil((double)maxHealth / 2.0D);
-        int absorptionHearts = Mth.ceil((double)playerAbsorption / 2.0D);
-        int l = normalHearts * 2;
-
-        for (int i1 = normalHearts + absorptionHearts - 1; i1 >= 0; --i1) {
-            int j1 = i1 / 10;
-            int k1 = i1 % 10;
-            int posX = startX + k1 * 8;
-            int posY = startY - j1 * heartColumns;
-            if (playerHealth + playerAbsorption <= 4) {
-                posY += this.random.nextInt(2);
+    private void renderWings(Gui gui, PoseStack poseStack, int startX, int startY, int playerWings, int displayWings, boolean blinking) {
+        for (int i = 0; i < 10; i++) {
+            int posX = startX - i * 8 - 9;
+            int posY = startY;
+            this.renderWing(gui, poseStack, posX, posY, blinking ? 9 : 0, 0);
+            int j2 = i * 2;
+            if (blinking && j2 < displayWings) {
+                boolean halfHeart = j2 + 1 == displayWings;
+                this.renderWing(gui, poseStack, posX, posY, 36 + (halfHeart ? 9 : 0), 0);
             }
 
-            if (i1 < normalHearts && i1 == heartJumpOffset) {
-                posY -= 2;
-            }
-
-            this.renderHeart(gui, poseStack, posX, posY, blinking ? 9 : 0, 0);
-            int j2 = i1 * 2;
-            boolean flag = i1 >= normalHearts;
-            if (flag) {
-                int k2 = j2 - l;
-                if (k2 < playerAbsorption) {
-                    boolean flag1 = k2 + 1 == playerAbsorption;
-                    this.renderHeart(gui, poseStack, posX, posY, 0, 0);
-                }
-            }
-
-            if (blinking && j2 < displayHealth) {
-                boolean flag2 = j2 + 1 == displayHealth;
-                this.renderHeart(gui, poseStack, posX, posY, 0, 0);
-            }
-
-            if (j2 < playerHealth) {
-                boolean flag3 = j2 + 1 == playerHealth;
-                this.renderHeart(gui, poseStack, posX, posY, 0, 0);
+            if (j2 < playerWings) {
+                boolean halfHeart = j2 + 1 == playerWings;
+                this.renderWing(gui, poseStack, posX, posY, 18 + (halfHeart ? 9 : 0), 0);
             }
         }
-
     }
 
-    private void renderHeart(Gui gui, PoseStack poseStack, int posX, int posY, int textureX, int textureY) {
+    private void renderWing(Gui gui, PoseStack poseStack, int posX, int posY, int textureX, int textureY) {
         gui.blit(poseStack, posX, posY, textureX, textureY, 9, 9);
     }
 

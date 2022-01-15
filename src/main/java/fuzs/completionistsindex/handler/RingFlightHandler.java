@@ -1,5 +1,7 @@
 package fuzs.completionistsindex.handler;
 
+import fuzs.completionistsindex.CompletionistsIndex;
+import fuzs.completionistsindex.world.entity.EnduranceEntity;
 import fuzs.completionistsindex.world.item.WingsItem;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Abilities;
@@ -15,7 +17,7 @@ public class RingFlightHandler {
             final ItemStack itemStack = player.getOffhandItem();
             final Abilities abilities = player.getAbilities();
             if (itemStack.getItem() instanceof WingsItem) {
-                if (!abilities.mayfly) {
+                if (!abilities.mayfly && (!((EnduranceEntity) player).isOutOfEndurance() || CompletionistsIndex.CONFIG.server().unlimitedFlight)) {
                     abilities.mayfly = true;
                     player.onUpdateAbilities();
                 }

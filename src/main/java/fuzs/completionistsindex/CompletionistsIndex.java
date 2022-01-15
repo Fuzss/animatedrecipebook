@@ -1,9 +1,12 @@
 package fuzs.completionistsindex;
 
 import fuzs.completionistsindex.config.ClientConfig;
+import fuzs.completionistsindex.config.ServerConfig;
 import fuzs.completionistsindex.data.ModAdvancementProvider;
 import fuzs.completionistsindex.data.ModItemTagsProvider;
 import fuzs.completionistsindex.data.ModRecipeProvider;
+import fuzs.completionistsindex.handler.EnchantmentHandler;
+import fuzs.completionistsindex.handler.EnduranceHandler;
 import fuzs.completionistsindex.handler.RingFlightHandler;
 import fuzs.completionistsindex.network.client.C2SCycleSlotsMessage;
 import fuzs.completionistsindex.registry.ModRegistry;
@@ -15,6 +18,7 @@ import fuzs.puzzleslib.network.NetworkHandler;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
@@ -31,7 +35,7 @@ public class CompletionistsIndex {
 
     public static final NetworkHandler NETWORK = NetworkHandler.of(MOD_ID);
     @SuppressWarnings("Convert2MethodRef")
-    public static final ConfigHolder<ClientConfig, AbstractConfig> CONFIG = ConfigHolder.client(() -> new ClientConfig());
+    public static final ConfigHolder<ClientConfig, ServerConfig> CONFIG = ConfigHolder.of(() -> new ClientConfig(), () -> new ServerConfig());
 
     @SubscribeEvent
     public static void onConstructMod(final FMLConstructModEvent evt) {
@@ -42,8 +46,13 @@ public class CompletionistsIndex {
     }
 
     private static void registerHandlers() {
-        final RingFlightHandler handler = new RingFlightHandler();
-        MinecraftForge.EVENT_BUS.addListener(handler::onPlayerTick);
+        final RingFlightHandler ringFlightHandler = new RingFlightHandler();
+        MinecraftForge.EVENT_BUS.addListener(ringFlightHandler::onPlayerTick);
+        final EnduranceHandler enduranceHandler = new EnduranceHandler();
+        MinecraftForge.EVENT_BUS.addListener(enduranceHandler::onPlayerTick);
+        final EnchantmentHandler enchantmentHandler = new EnchantmentHandler();
+        MinecraftForge.EVENT_BUS.addListener(enchantmentHandler::onBreakSpeed);
+        MinecraftForge.EVENT_BUS.addListener(enchantmentHandler::onPlayerTick);
     }
 
     private static void registerMessages() {

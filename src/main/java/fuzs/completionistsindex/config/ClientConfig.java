@@ -8,6 +8,8 @@ public class ClientConfig extends AbstractConfig {
     public ModifierKey scrollingModifierKey = ModifierKey.ALT;
     @Config(description = "Render rings of flight when equipped in offhand. A simply convenience feature to free up valuable screen estate.")
     public boolean renderOffhandRing = false;
+    @Config(description = "Show endurance bar for flying all the time, even when it is full.")
+    public boolean alwaysRenderEnduranceBar = false;
 
     public ClientConfig() {
         super("");

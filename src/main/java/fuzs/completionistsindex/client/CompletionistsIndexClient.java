@@ -34,6 +34,7 @@ public class CompletionistsIndexClient {
         final Minecraft minecraft = Minecraft.getInstance();
         final MouseScrollHandler mouseScrollHandler = new MouseScrollHandler(minecraft);
         MinecraftForge.EVENT_BUS.addListener(mouseScrollHandler::onMouseScroll);
+        FirstPersonWingsHandler.init();
     }
 
     private static void registerHandlers() {
