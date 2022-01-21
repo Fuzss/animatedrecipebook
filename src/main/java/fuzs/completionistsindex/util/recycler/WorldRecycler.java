@@ -1,4 +1,4 @@
-package fuzs.completionistsindex.util;
+package fuzs.completionistsindex.util.recycler;
 
 import java.io.File;
 import java.io.IOException;
