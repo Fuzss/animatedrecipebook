@@ -9,6 +9,7 @@ import fuzs.completionistsindex.handler.EnchantmentHandler;
 import fuzs.completionistsindex.handler.EnduranceHandler;
 import fuzs.completionistsindex.handler.RingFlightHandler;
 import fuzs.completionistsindex.network.client.C2SCycleSlotsMessage;
+import fuzs.completionistsindex.network.client.C2SSweepAttackMessage;
 import fuzs.completionistsindex.registry.ModRegistry;
 import fuzs.puzzleslib.config.AbstractConfig;
 import fuzs.puzzleslib.config.ConfigHolder;
@@ -57,6 +58,7 @@ public class CompletionistsIndex {
 
     private static void registerMessages() {
         NETWORK.register(C2SCycleSlotsMessage.class, C2SCycleSlotsMessage::new, MessageDirection.TO_SERVER);
+        NETWORK.register(C2SSweepAttackMessage.class, C2SSweepAttackMessage::new, MessageDirection.TO_SERVER);
     }
 
     @SubscribeEvent

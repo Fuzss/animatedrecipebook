@@ -8,6 +8,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.function.Consumer;
 
@@ -40,5 +41,13 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("FGP")
                 .unlockedBy("has_nether_star", has(Items.NETHER_STAR))
                 .save(p_176532_, new ResourceLocation(CompletionistsIndex.MOD_ID, "invisible_wings_mirrored"));
+        ShapedRecipeBuilder.shaped(Items.ENCHANTED_GOLDEN_APPLE)
+                .define('#', Blocks.GOLD_BLOCK)
+                .define('A', Items.APPLE)
+                .pattern("###")
+                .pattern("#A#")
+                .pattern("###")
+                .unlockedBy("has_dragon_egg", has(Blocks.DRAGON_EGG))
+                .save(p_176532_);
     }
 }

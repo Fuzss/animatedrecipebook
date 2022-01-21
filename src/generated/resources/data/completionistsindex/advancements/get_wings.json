@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "completionistsindex:angel_wings"
+      "item": "completionistsindex:invisible_wings"
     },
     "title": {
       "translate": "completionistsindex.advancements.get_wings.title"
@@ -13,7 +13,7 @@
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,
-    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+    "background": "completionistsindex:textures/gui/advancements/backgrounds/gold_block.png"
   },
   "criteria": {
     "get_wings": {

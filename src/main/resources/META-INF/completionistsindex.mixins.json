@@ -5,7 +5,8 @@
   "package": "fuzs.completionistsindex.mixin",
   "refmap": "META-INF/completionistsindex.refmap.json",
   "mixins": [
-    "PlayerMixin"
+    "PlayerMixin",
+    "LevelStorageAccessMixin"
   ],
   "client": [
     "client.accessor.MouseHandlerAccessor"

@@ -43,6 +43,8 @@ public class CompletionistsIndexClient {
         MinecraftForge.EVENT_BUS.addListener(pauseMenuHandler::onInitGui);
         final FirstPersonWingsHandler firstPersonWingsHandler = new FirstPersonWingsHandler();
         MinecraftForge.EVENT_BUS.addListener(firstPersonWingsHandler::onRenderHand);
+        final SweepingHandler sweepingHandler = new SweepingHandler();
+        MinecraftForge.EVENT_BUS.addListener(sweepingHandler::onLeftClickEmpty);
     }
 
     @SubscribeEvent
