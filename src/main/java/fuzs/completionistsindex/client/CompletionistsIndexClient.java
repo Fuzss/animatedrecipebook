@@ -45,6 +45,8 @@ public class CompletionistsIndexClient {
         MinecraftForge.EVENT_BUS.addListener(firstPersonWingsHandler::onRenderHand);
         final SweepingHandler sweepingHandler = new SweepingHandler();
         MinecraftForge.EVENT_BUS.addListener(sweepingHandler::onLeftClickEmpty);
+        final AttributesTooltipHandler attributesTooltipHandler = new AttributesTooltipHandler();
+        MinecraftForge.EVENT_BUS.addListener(attributesTooltipHandler::onItemTooltip);
     }
 
     @SubscribeEvent
