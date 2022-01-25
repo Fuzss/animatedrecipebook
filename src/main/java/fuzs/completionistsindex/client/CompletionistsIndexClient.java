@@ -7,6 +7,7 @@ import fuzs.completionistsindex.client.registry.ModClientRegistry;
 import fuzs.completionistsindex.client.renderer.entity.layers.WingsLayer;
 import fuzs.puzzleslib.PuzzlesLib;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -47,6 +48,11 @@ public class CompletionistsIndexClient {
         MinecraftForge.EVENT_BUS.addListener(sweepingHandler::onLeftClickEmpty);
         final AttributesTooltipHandler attributesTooltipHandler = new AttributesTooltipHandler();
         MinecraftForge.EVENT_BUS.addListener(attributesTooltipHandler::onItemTooltip);
+        final AttackIndicatorOptionHandler attackIndicatorOptionHandler = new AttackIndicatorOptionHandler();
+        MinecraftForge.EVENT_BUS.addListener(attackIndicatorOptionHandler::onScreenInit);
+        MinecraftForge.EVENT_BUS.addListener(attackIndicatorOptionHandler::onDrawScreen);
+        final ItemInHandHandler itemInHandHandler = new ItemInHandHandler();
+        MinecraftForge.EVENT_BUS.addListener(itemInHandHandler::onRenderHand);
     }
 
     @SubscribeEvent

@@ -9,7 +9,9 @@
     "LevelStorageAccessMixin"
   ],
   "client": [
-    "client.accessor.MouseHandlerAccessor"
+    "client.MinecraftMixin",
+    "client.accessor.MouseHandlerAccessor",
+    "client.accessor.ItemInHandRendererAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
