@@ -4,6 +4,7 @@ import fuzs.completionistsindex.CompletionistsIndex;
 import fuzs.completionistsindex.client.handler.*;
 import fuzs.completionistsindex.client.model.WingsModel;
 import fuzs.completionistsindex.client.registry.ModClientRegistry;
+import fuzs.completionistsindex.client.renderer.entity.layers.TeleportChargeEffectLayer;
 import fuzs.completionistsindex.client.renderer.entity.layers.WingsLayer;
 import fuzs.puzzleslib.PuzzlesLib;
 import net.minecraft.client.Minecraft;
@@ -63,11 +64,15 @@ public class CompletionistsIndexClient {
                 .map(evt::getSkin)
                 .filter(Objects::nonNull)
                 .map(e -> ((LivingEntityRenderer<?, ?>) e))
-                .forEach(e -> e.addLayer(new WingsLayer<>(e, minecraft.getEntityModels())));
+                .forEach(e -> {
+                    e.addLayer(new WingsLayer<>(e, minecraft.getEntityModels()));
+                    e.addLayer(new TeleportChargeEffectLayer<>(e, minecraft.getEntityModels()));
+                });
     }
 
     @SubscribeEvent
     public static void onRegisterLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions evt) {
         evt.registerLayerDefinition(ModClientRegistry.WINGS, WingsModel::createLayer);
+        evt.registerLayerDefinition(ModClientRegistry.TELEPORT_RAY, TeleportChargeEffectLayer::createLayer);
     }
 }

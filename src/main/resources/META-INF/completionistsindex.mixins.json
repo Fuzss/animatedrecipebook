@@ -6,10 +6,10 @@
   "refmap": "META-INF/completionistsindex.refmap.json",
   "mixins": [
     "PlayerMixin",
-    "LevelStorageAccessMixin"
+    "LevelStorageAccessMixin",
+    "ServerLifecycleHooksMixin"
   ],
   "client": [
-    "client.MinecraftMixin",
     "client.accessor.MouseHandlerAccessor",
     "client.accessor.ItemInHandRendererAccessor"
   ],

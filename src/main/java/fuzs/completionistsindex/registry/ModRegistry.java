@@ -5,14 +5,14 @@ import fuzs.completionistsindex.world.item.WingsItem;
 import fuzs.completionistsindex.world.item.enchantment.AirWorkerEnchantment;
 import fuzs.completionistsindex.world.item.enchantment.EnduranceEnchantment;
 import fuzs.puzzleslib.registry.RegistryManager;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModRegistry {
@@ -26,7 +26,7 @@ public class ModRegistry {
     public static final RegistryObject<Enchantment> AERIAL_AFFINITY_ENCHANTMENT = REGISTRY.registerEnchantment("aerial_affinity", () -> new AirWorkerEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.OFFHAND));
     public static final RegistryObject<Enchantment> ENDURANCE_ENCHANTMENT = REGISTRY.registerEnchantment("endurance", () -> new EnduranceEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.OFFHAND));
 
-    public static final Tags.IOptionalNamedTag<Item> WINGS_TAG = ItemTags.createOptional(new ResourceLocation(CompletionistsIndex.MOD_ID, "wings"));
+    public static final TagKey<Item> WINGS_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(CompletionistsIndex.MOD_ID, "wings"));
 
     public static void touch() {
 
