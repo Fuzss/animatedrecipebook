@@ -27,7 +27,7 @@ public class EnchantmentHandler {
     public void onPlayerTick(final TickEvent.PlayerTickEvent evt) {
         if (evt.phase != TickEvent.Phase.END) return;
         if (evt.player.getAbilities().flying) {
-            CompletionistsIndex.LOGGER.info(evt.player.getAbilities().getFlyingSpeed());
+//            CompletionistsIndex.LOGGER.info(evt.player.getAbilities().getFlyingSpeed());
         }
     }
 }

@@ -2,16 +2,13 @@ package fuzs.completionistsindex;
 
 import fuzs.completionistsindex.config.ClientConfig;
 import fuzs.completionistsindex.config.ServerConfig;
-import fuzs.completionistsindex.data.ModAdvancementProvider;
-import fuzs.completionistsindex.data.ModItemTagsProvider;
-import fuzs.completionistsindex.data.ModRecipeProvider;
+import fuzs.completionistsindex.data.*;
 import fuzs.completionistsindex.handler.EnchantmentHandler;
 import fuzs.completionistsindex.handler.EnduranceHandler;
 import fuzs.completionistsindex.handler.RingFlightHandler;
 import fuzs.completionistsindex.network.client.C2SCycleSlotsMessage;
 import fuzs.completionistsindex.network.client.C2SSweepAttackMessage;
 import fuzs.completionistsindex.registry.ModRegistry;
-import fuzs.puzzleslib.config.AbstractConfig;
 import fuzs.puzzleslib.config.ConfigHolder;
 import fuzs.puzzleslib.config.ConfigHolderImpl;
 import fuzs.puzzleslib.network.MessageDirection;
@@ -19,7 +16,6 @@ import fuzs.puzzleslib.network.NetworkHandler;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
@@ -67,6 +63,10 @@ public class CompletionistsIndex {
         final ExistingFileHelper existingFileHelper = evt.getExistingFileHelper();
         generator.addProvider(new ModRecipeProvider(generator));
         generator.addProvider(new ModAdvancementProvider(generator, existingFileHelper));
+        generator.addProvider(new ModBlockTagsProvider(generator, existingFileHelper));
         generator.addProvider(new ModItemTagsProvider(generator, existingFileHelper));
+        generator.addProvider(new ModBlockStateProvider(generator, MOD_ID, existingFileHelper));
+        generator.addProvider(new ModLanguageProvider(generator, MOD_ID));
+        generator.addProvider(new ModItemModelProvider(generator, MOD_ID, existingFileHelper));
     }
 }

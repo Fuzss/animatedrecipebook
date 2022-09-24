@@ -4,11 +4,13 @@ import fuzs.completionistsindex.CompletionistsIndex;
 import fuzs.completionistsindex.client.handler.*;
 import fuzs.completionistsindex.client.model.WingsModel;
 import fuzs.completionistsindex.client.registry.ModClientRegistry;
+import fuzs.completionistsindex.client.renderer.blockentity.TemporaryHoleRenderer;
 import fuzs.completionistsindex.client.renderer.entity.layers.TeleportChargeEffectLayer;
 import fuzs.completionistsindex.client.renderer.entity.layers.WingsLayer;
+import fuzs.completionistsindex.registry.ModRegistry;
 import fuzs.puzzleslib.PuzzlesLib;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -37,6 +39,7 @@ public class CompletionistsIndexClient {
         final MouseScrollHandler mouseScrollHandler = new MouseScrollHandler(minecraft);
         MinecraftForge.EVENT_BUS.addListener(mouseScrollHandler::onMouseScroll);
         FirstPersonWingsHandler.init();
+        BlockEntityRenderers.register(ModRegistry.TEMPORARY_HOLE_BLOCK_ENTITY_TYPE.get(), TemporaryHoleRenderer::new);
     }
 
     private static void registerHandlers() {
