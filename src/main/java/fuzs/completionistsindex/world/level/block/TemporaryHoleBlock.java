@@ -1,7 +1,9 @@
 package fuzs.completionistsindex.world.level.block;
 
+import fuzs.completionistsindex.core.particles.SparkleParticleData;
 import fuzs.completionistsindex.registry.ModRegistry;
 import fuzs.completionistsindex.world.level.block.entity.TemporaryHoleBlockEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -13,11 +15,14 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IPlantable;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Random;
 
 public class TemporaryHoleBlock extends BaseEntityBlock {
 
@@ -65,6 +70,23 @@ public class TemporaryHoleBlock extends BaseEntityBlock {
     @Override
     public boolean canBeReplaced(BlockState p_53035_, Fluid p_53036_) {
         return false;
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
+        if (level.getBlockEntity(pos) instanceof TemporaryHoleBlockEntity blockEntity && blockEntity.sourceState != null) {
+            int color = ChatFormatting.BLUE.getColor();
+            SparkleParticleData sparkle = SparkleParticleData.noClip(1.0F, (color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, 20);
+            VoxelShape occlusionShape = blockEntity.sourceState.getShape(level, pos);
+            occlusionShape.forAllEdges((x0, y0, z0, x1, y1, z1) -> {
+                Vec3 from = new Vec3(x0, y0, z0);
+                Vec3 to = new Vec3(x1, y1, z1);
+                if (random.nextDouble() < from.distanceTo(to)) {
+                    Vec3 vec3 = from.lerp(to, random.nextDouble());
+                    level.addParticle(sparkle, pos.getX() + vec3.x(), pos.getY() + vec3.y(), pos.getZ() + vec3.z(), 0.0, 0.0, 0.0);
+                }
+            });
+        }
     }
 
     @Override

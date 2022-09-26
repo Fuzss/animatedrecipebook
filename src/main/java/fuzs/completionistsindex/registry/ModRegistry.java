@@ -1,6 +1,8 @@
 package fuzs.completionistsindex.registry;
 
 import fuzs.completionistsindex.CompletionistsIndex;
+import fuzs.completionistsindex.core.particles.SparkleParticleData;
+import fuzs.completionistsindex.core.particles.SparkleParticleType;
 import fuzs.completionistsindex.world.item.PortableHoleItem;
 import fuzs.completionistsindex.world.item.WingsItem;
 import fuzs.completionistsindex.world.item.enchantment.AirWorkerEnchantment;
@@ -9,6 +11,7 @@ import fuzs.completionistsindex.world.level.block.TemporaryHoleBlock;
 import fuzs.completionistsindex.world.level.block.entity.TemporaryHoleBlockEntity;
 import fuzs.puzzleslib.registry.RegistryManager;
 import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -21,6 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModRegistry {
@@ -39,6 +43,7 @@ public class ModRegistry {
     }).strength(-1.0F, 3600000.0F).noDrops()));
     public static final RegistryObject<Item> PORTABLE_HOLE_ITEM = REGISTRY.registerItem("portable_hole", () -> new PortableHoleItem(new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<BlockEntityType<TemporaryHoleBlockEntity>> TEMPORARY_HOLE_BLOCK_ENTITY_TYPE = REGISTRY.registerRawBlockEntityType("temporary_hole", () -> BlockEntityType.Builder.of(TemporaryHoleBlockEntity::new, TEMPORARY_HOLE_BLOCK.get()));
+    public static final RegistryObject<ParticleType<SparkleParticleData>> SPARK_PARTICLE_TYPE = REGISTRY.register(ForgeRegistries.PARTICLE_TYPES, "sparkle", () -> new SparkleParticleType());
 
     public static final TagKey<Item> WINGS_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(CompletionistsIndex.MOD_ID, "wings"));
     public static final TagKey<Block> PORTABLE_HOLE_IMMUNE_TAG = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(CompletionistsIndex.MOD_ID, "portable_hole_immune"));

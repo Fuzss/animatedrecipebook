@@ -7,6 +7,7 @@ import fuzs.completionistsindex.client.registry.ModClientRegistry;
 import fuzs.completionistsindex.client.renderer.blockentity.TemporaryHoleRenderer;
 import fuzs.completionistsindex.client.renderer.entity.layers.TeleportChargeEffectLayer;
 import fuzs.completionistsindex.client.renderer.entity.layers.WingsLayer;
+import fuzs.completionistsindex.core.particles.SparkleParticleType;
 import fuzs.completionistsindex.registry.ModRegistry;
 import fuzs.puzzleslib.PuzzlesLib;
 import net.minecraft.client.Minecraft;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -77,5 +79,10 @@ public class CompletionistsIndexClient {
     public static void onRegisterLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions evt) {
         evt.registerLayerDefinition(ModClientRegistry.WINGS, WingsModel::createLayer);
         evt.registerLayerDefinition(ModClientRegistry.TELEPORT_RAY, TeleportChargeEffectLayer::createLayer);
+    }
+
+    @SubscribeEvent
+    public static void onParticleFactoryRegister(final ParticleFactoryRegisterEvent evt) {
+        Minecraft.getInstance().particleEngine.register(ModRegistry.SPARK_PARTICLE_TYPE.get(), SparkleParticleType.Factory::new);
     }
 }
