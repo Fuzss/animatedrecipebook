@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import fuzs.completionistsindex.client.model.WingsModel;
-import fuzs.completionistsindex.client.registry.ModClientRegistry;
+import fuzs.completionistsindex.client.init.ModClientRegistry;
 import fuzs.completionistsindex.world.item.WingsItem;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;

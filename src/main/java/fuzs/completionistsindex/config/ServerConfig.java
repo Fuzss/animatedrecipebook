@@ -14,6 +14,7 @@ public class ServerConfig extends AbstractConfig {
     @Config(description = "Flight speed multiplier every level of the flight speed enchantment adds.")
     @Config.DoubleRange(min = 0.0, max = 0.5)
     public double flightSpeedSteps = 0.25;
+    @Config(description = "When the player takes damage while flying (e.g. from being shot at), should flight endurance be reduced drastically.")
     public boolean damageReducesEndurance = true;
 
     public ServerConfig() {

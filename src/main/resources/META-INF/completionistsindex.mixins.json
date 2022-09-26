@@ -6,12 +6,8 @@
   "refmap": "META-INF/completionistsindex.refmap.json",
   "mixins": [
     "PlayerMixin",
-    "LevelStorageAccessMixin",
-    "ServerLifecycleHooksMixin"
   ],
   "client": [
-    "client.accessor.MouseHandlerAccessor",
-    "client.accessor.ItemInHandRendererAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

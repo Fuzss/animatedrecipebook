@@ -1,14 +1,14 @@
 package fuzs.completionistsindex.world.item.enchantment;
 
+import fuzs.completionistsindex.init.ModRegistry;
 import fuzs.completionistsindex.world.item.WingsItem;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class AirWorkerEnchantment extends Enchantment {
    public AirWorkerEnchantment(Rarity p_45290_, EquipmentSlot... p_45291_) {
-      super(p_45290_, EnchantmentCategory.VANISHABLE, p_45291_);
+      super(p_45290_, ModRegistry.WINGS_ENCHANTMENT_CATEGORY, p_45291_);
    }
 
    @Override

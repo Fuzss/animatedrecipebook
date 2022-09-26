@@ -22,7 +22,7 @@ public class FirstPersonWingsHandler {
     }
 
     @SubscribeEvent
-    public void onRenderHand(final RenderHandEvent evt) {
+    public static void onRenderHand(final RenderHandEvent evt) {
         if (evt.getHand() == InteractionHand.OFF_HAND && evt.getItemStack().getItem() instanceof WingsItem) {
             if (!CompletionistsIndex.CONFIG.client().renderOffhandRing) evt.setCanceled(true);
         }

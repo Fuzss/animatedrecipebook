@@ -1,7 +1,7 @@
 package fuzs.completionistsindex.data;
 
 import fuzs.completionistsindex.CompletionistsIndex;
-import fuzs.completionistsindex.registry.ModRegistry;
+import fuzs.completionistsindex.init.ModRegistry;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
@@ -15,8 +15,9 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import java.util.function.Consumer;
 
 public class ModAdvancementProvider extends AdvancementProvider {
-    public ModAdvancementProvider(DataGenerator p_123966_, ExistingFileHelper fileHelperIn) {
-        super(p_123966_, fileHelperIn);
+    
+    public ModAdvancementProvider(DataGenerator dataGenerator, ExistingFileHelper existingFileHelper) {
+        super(dataGenerator, existingFileHelper);
     }
 
     @Override

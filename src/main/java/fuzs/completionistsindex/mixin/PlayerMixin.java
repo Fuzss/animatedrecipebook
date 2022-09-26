@@ -1,7 +1,7 @@
 package fuzs.completionistsindex.mixin;
 
 import fuzs.completionistsindex.CompletionistsIndex;
-import fuzs.completionistsindex.registry.ModRegistry;
+import fuzs.completionistsindex.init.ModRegistry;
 import fuzs.completionistsindex.world.entity.EnduranceEntity;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

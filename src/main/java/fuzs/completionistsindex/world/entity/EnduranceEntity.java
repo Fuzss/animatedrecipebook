@@ -3,6 +3,7 @@ package fuzs.completionistsindex.world.entity;
 import fuzs.completionistsindex.CompletionistsIndex;
 
 public interface EnduranceEntity {
+
     int getMaxEndurance();
 
     int getEndurance();

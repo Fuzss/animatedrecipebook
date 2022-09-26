@@ -1,14 +1,14 @@
 package fuzs.completionistsindex.world.item.enchantment;
 
+import fuzs.completionistsindex.init.ModRegistry;
 import fuzs.completionistsindex.world.item.WingsItem;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class EnduranceEnchantment extends Enchantment {
    public EnduranceEnchantment(Rarity p_45117_, EquipmentSlot... p_45118_) {
-      super(p_45117_, EnchantmentCategory.VANISHABLE, p_45118_);
+      super(p_45117_, ModRegistry.WINGS_ENCHANTMENT_CATEGORY, p_45118_);
    }
 
    @Override
