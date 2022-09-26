@@ -13,6 +13,7 @@ public class ModLanguageProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
         this.add(ModRegistry.PORTABLE_HOLE_ITEM.get(), "Portable Hole");
+        this.add("item.completionistsindex.portable_hole.description", "Click on a block and see what happens!");
         this.add(ModRegistry.BUTTERFlY_WINGS_ITEM.get(), "Butterfly Ring of Flight");
         this.add(ModRegistry.CHICKEN_WINGS_ITEM.get(), "Chicken Ring of Flight");
         this.add(ModRegistry.DRAGON_WINGS_ITEM.get(), "Dragon Ring of Flight");

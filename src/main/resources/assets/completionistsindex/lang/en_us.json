@@ -13,6 +13,7 @@
   "item.completionistsindex.fairy_wings": "Fairy Ring of Flight",
   "item.completionistsindex.invisible_wings": "Ring of Flight",
   "item.completionistsindex.portable_hole": "Portable Hole",
+  "item.completionistsindex.portable_hole.description": "Click on a block and see what happens!",
   "key.cycleLeft": "Cycle Hotbar Slot Left",
   "key.cycleRight": "Cycle Hotbar Slot Right"
 }

@@ -8,7 +8,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Block;
 
 public class TemporaryHoleRenderer implements BlockEntityRenderer<TemporaryHoleBlockEntity> {
 
@@ -33,13 +35,16 @@ public class TemporaryHoleRenderer implements BlockEntityRenderer<TemporaryHoleB
    }
 
    private void renderFace(TemporaryHoleBlockEntity blockEntity, Matrix4f matrix4f, VertexConsumer vertexConsumer, float x0, float x1, float y0, float y1, float z0, float z1, float z2, float z3, Direction direction) {
-      if (direction == Direction.SOUTH || direction == Direction.NORTH)
-      TemporaryHoleBlockEntity.getParticleEdges(blockEntity.getLevel(), blockEntity.getBlockPos());
-      if (!TemporaryHoleBlockEntity.shouldRenderFace(blockEntity, direction)) {
+      if (!shouldRenderFace(blockEntity, direction)) {
          vertexConsumer.vertex(matrix4f, x0, y1, z3).endVertex();
          vertexConsumer.vertex(matrix4f, x1, y1, z2).endVertex();
          vertexConsumer.vertex(matrix4f, x1, y0, z1).endVertex();
          vertexConsumer.vertex(matrix4f, x0, y0, z0).endVertex();
       }
+   }
+
+   private static boolean shouldRenderFace(TemporaryHoleBlockEntity blockEntity, Direction direction) {
+      BlockPos blockPos = blockEntity.getBlockPos();
+      return Block.shouldRenderFace(blockEntity.getBlockState(), blockEntity.getLevel(), blockPos, direction, blockPos.relative(direction));
    }
 }

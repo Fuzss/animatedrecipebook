@@ -17,7 +17,7 @@ public class ModBlockTagsProvider extends TagsProvider<Block> {
 
     @Override
     protected void addTags() {
-        this.tag(ModRegistry.PORTABLE_HOLE_IMMUNE_TAG).addTag(BlockTags.DOORS);
+        this.tag(ModRegistry.PORTABLE_HOLE_IMMUNE_TAG);
     }
 
     @Override

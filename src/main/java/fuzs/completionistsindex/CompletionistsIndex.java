@@ -14,8 +14,13 @@ import fuzs.puzzleslib.config.ConfigHolderImpl;
 import fuzs.puzzleslib.network.MessageDirection;
 import fuzs.puzzleslib.network.NetworkHandler;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.entries.LootTableReference;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
@@ -50,6 +55,11 @@ public class CompletionistsIndex {
         final EnchantmentHandler enchantmentHandler = new EnchantmentHandler();
         MinecraftForge.EVENT_BUS.addListener(enchantmentHandler::onBreakSpeed);
         MinecraftForge.EVENT_BUS.addListener(enchantmentHandler::onPlayerTick);
+        MinecraftForge.EVENT_BUS.addListener((final LootTableLoadEvent evt) -> {
+            if (evt.getName().equals(BuiltInLootTables.STRONGHOLD_CORRIDOR)) {
+                evt.getTable().addPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootTableReference.lootTableReference(ModRegistry.STRONGHOLD_CORRIDOR_INJECT_LOOT_TABLE)).build());
+            }
+        });
     }
 
     private static void registerMessages() {
@@ -68,5 +78,6 @@ public class CompletionistsIndex {
         generator.addProvider(new ModBlockStateProvider(generator, MOD_ID, existingFileHelper));
         generator.addProvider(new ModLanguageProvider(generator, MOD_ID));
         generator.addProvider(new ModItemModelProvider(generator, MOD_ID, existingFileHelper));
+        generator.addProvider(new ModLootTableProvider(generator, MOD_ID));
     }
 }

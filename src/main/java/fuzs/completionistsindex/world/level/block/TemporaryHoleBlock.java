@@ -1,5 +1,6 @@
 package fuzs.completionistsindex.world.level.block;
 
+import fuzs.completionistsindex.CompletionistsIndex;
 import fuzs.completionistsindex.core.particles.SparkleParticleData;
 import fuzs.completionistsindex.registry.ModRegistry;
 import fuzs.completionistsindex.world.level.block.entity.TemporaryHoleBlockEntity;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -73,19 +75,27 @@ public class TemporaryHoleBlock extends BaseEntityBlock {
     }
 
     @Override
+    public boolean isPathfindable(BlockState p_60475_, BlockGetter p_60476_, BlockPos p_60477_, PathComputationType p_60478_) {
+        return false;
+    }
+
+    @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
-        if (level.getBlockEntity(pos) instanceof TemporaryHoleBlockEntity blockEntity && blockEntity.sourceState != null) {
-            int color = ChatFormatting.BLUE.getColor();
-            SparkleParticleData sparkle = SparkleParticleData.noClip(1.0F, (color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, 20);
-            VoxelShape occlusionShape = blockEntity.sourceState.getShape(level, pos);
-            occlusionShape.forAllEdges((x0, y0, z0, x1, y1, z1) -> {
-                Vec3 from = new Vec3(x0, y0, z0);
-                Vec3 to = new Vec3(x1, y1, z1);
-                if (random.nextDouble() < from.distanceTo(to)) {
-                    Vec3 vec3 = from.lerp(to, random.nextDouble());
-                    level.addParticle(sparkle, pos.getX() + vec3.x(), pos.getY() + vec3.y(), pos.getZ() + vec3.z(), 0.0, 0.0, 0.0);
-                }
-            });
+        if (!CompletionistsIndex.CONFIG.server().sparkParticles) return;
+        if (level.getBlockEntity(pos) instanceof TemporaryHoleBlockEntity blockEntity) {
+            if (blockEntity.sourceState != null) {
+                int color = ChatFormatting.BLUE.getColor();
+                SparkleParticleData sparkle = SparkleParticleData.noClip(1.0F, (color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, 20);
+                VoxelShape occlusionShape = blockEntity.sourceState.getShape(level, pos);
+                occlusionShape.forAllEdges((x0, y0, z0, x1, y1, z1) -> {
+                    Vec3 from = new Vec3(x0, y0, z0);
+                    Vec3 to = new Vec3(x1, y1, z1);
+                    if (Math.pow(random.nextDouble(), 2.0) < from.distanceToSqr(to)) {
+                        Vec3 vec3 = from.lerp(to, random.nextDouble());
+                        level.addParticle(sparkle, pos.getX() + vec3.x(), pos.getY() + vec3.y(), pos.getZ() + vec3.z(), 0.0, 0.0, 0.0);
+                    }
+                });
+            }
         }
     }
 

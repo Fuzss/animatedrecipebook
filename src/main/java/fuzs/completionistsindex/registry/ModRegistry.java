@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -47,6 +48,8 @@ public class ModRegistry {
 
     public static final TagKey<Item> WINGS_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(CompletionistsIndex.MOD_ID, "wings"));
     public static final TagKey<Block> PORTABLE_HOLE_IMMUNE_TAG = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(CompletionistsIndex.MOD_ID, "portable_hole_immune"));
+
+    public static final ResourceLocation STRONGHOLD_CORRIDOR_INJECT_LOOT_TABLE = new ResourceLocation(CompletionistsIndex.MOD_ID, "inject/" + BuiltInLootTables.STRONGHOLD_CORRIDOR.getPath());
 
     public static void touch() {
 
