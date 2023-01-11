@@ -11,5 +11,8 @@
   "item.completionistsindex.invisible_wings": "Ring of Flight",
   "completionistsindex.advancements.get_wings.title": "Rings Of Flight",
   "completionistsindex.advancements.get_wings.description": "Construct a ring of flight",
-  "completionistsindex.advancements.angle_wings.title": "Like An Angle"
+  "completionistsindex.advancements.angle_wings.title": "Like An Angle",
+  "completionistsindex.gui.index.sorting.alphabetically": "Alphabetically",
+  "completionistsindex.gui.index.sorting.completed_first": "Collected First",
+  "completionistsindex.gui.index.sorting.completed_last": "Collected Last"
 }

@@ -8,10 +8,14 @@ import fuzs.completionistsindex.client.renderer.entity.layers.TeleportChargeEffe
 import fuzs.completionistsindex.client.renderer.entity.layers.WingsLayer;
 import fuzs.puzzleslib.PuzzlesLib;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.PauseScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -40,9 +44,12 @@ public class CompletionistsIndexClient {
     }
 
     private static void registerHandlers() {
-        final PauseMenuHandler pauseMenuHandler = new PauseMenuHandler();
-        MinecraftForge.EVENT_BUS.addListener(pauseMenuHandler::onClientTick);
-        MinecraftForge.EVENT_BUS.addListener(pauseMenuHandler::onInitGui);
+        MinecraftForge.EVENT_BUS.addListener((final ScreenEvent.InitScreenEvent.Post evt) -> {
+            Screen screen = evt.getScreen();
+            if (evt.getScreen() instanceof PauseScreen) {
+                PauseMenuHandler.onScreenInit$Post(screen, Minecraft.getInstance(), screen.width, screen.height, screen.renderables, evt::addListener);
+            }
+        });
         final FirstPersonWingsHandler firstPersonWingsHandler = new FirstPersonWingsHandler();
         MinecraftForge.EVENT_BUS.addListener(firstPersonWingsHandler::onRenderHand);
         final SweepingHandler sweepingHandler = new SweepingHandler();

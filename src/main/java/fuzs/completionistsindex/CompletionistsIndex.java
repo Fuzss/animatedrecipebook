@@ -17,6 +17,7 @@ import fuzs.puzzleslib.config.ConfigHolderImpl;
 import fuzs.puzzleslib.network.MessageDirection;
 import fuzs.puzzleslib.network.NetworkHandler;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -68,5 +69,9 @@ public class CompletionistsIndex {
         generator.addProvider(new ModRecipeProvider(generator));
         generator.addProvider(new ModAdvancementProvider(generator, existingFileHelper));
         generator.addProvider(new ModItemTagsProvider(generator, existingFileHelper));
+    }
+
+    public static ResourceLocation id(String path) {
+        return new ResourceLocation(MOD_ID, path);
     }
 }
