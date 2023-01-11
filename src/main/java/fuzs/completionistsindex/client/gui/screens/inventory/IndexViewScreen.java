@@ -67,7 +67,7 @@ public class IndexViewScreen extends Screen implements StatsUpdateListener {
          }
       }
       this.statsPages = builder.build();
-      this.resetCurrentPage();
+      this.setCurrentPage(0);
    }
 
    @Override
@@ -85,12 +85,12 @@ public class IndexViewScreen extends Screen implements StatsUpdateListener {
          this.renderTooltip(poseStack, this.statsSorting.component, mouseX, mouseY);
       }, TextComponent.EMPTY));
       this.turnPageBackwards = this.addRenderableWidget(new ImageButton(this.leftPos + 27, this.topPos + 173, 18, 10, 1, 203, 20, INDEX_LOCATION, 512, 256, button -> {
-         this.setCurrentPage(this.currentPage - 1);
+         this.decrementPage();
       }));
       this.turnPageForwards = this.addRenderableWidget(new ImageButton(this.leftPos + 316 - 27 - 18, this.topPos + 173, 18, 10, 21, 203, 20, INDEX_LOCATION, 512, 256, button -> {
-         this.setCurrentPage(this.currentPage + 1);
+         this.incrementPage();
       }));
-      this.resetCurrentPage();
+      this.setCurrentPage(this.currentPage);
    }
 
    @Override
@@ -109,8 +109,12 @@ public class IndexViewScreen extends Screen implements StatsUpdateListener {
       }
    }
 
-   private void resetCurrentPage() {
-      this.setCurrentPage(this.currentPage);
+   private void decrementPage() {
+      if (this.currentPage > 0) this.setCurrentPage(this.currentPage - 1);
+   }
+
+   private void incrementPage() {
+      if (this.currentPage < this.getAllPages()) this.setCurrentPage(this.currentPage + 1);
    }
 
    private void setCurrentPage(int newPage) {
@@ -124,6 +128,19 @@ public class IndexViewScreen extends Screen implements StatsUpdateListener {
 
    private int getAllPages() {
       return this.statsPages != null ? this.statsPages.size() : 1;
+   }
+
+   @Override
+   public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+      if (delta > 0.0) {
+         this.decrementPage();
+         return true;
+      } else if (delta < 0.0) {
+         this.incrementPage();
+         return true;
+      } else {
+         return super.mouseScrolled(mouseX, mouseY, delta);
+      }
    }
 
    @Override
