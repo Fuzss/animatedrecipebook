@@ -12,6 +12,7 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.achievement.StatsUpdateListener;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.NonNullList;
 import net.minecraft.locale.Language;
@@ -23,8 +24,11 @@ import net.minecraft.stats.StatsCounter;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 public class IndexViewScreen extends Screen implements StatsUpdateListener {
    public static final ResourceLocation INDEX_LOCATION = CompletionistsIndex.id("textures/gui/index.png");
@@ -35,7 +39,7 @@ public class IndexViewScreen extends Screen implements StatsUpdateListener {
    private int topPos;
    private Button turnPageBackwards;
    private Button turnPageForwards;
-   private StatsSorting statsSorting = StatsSorting.ALPHABETICALLY;
+   private StatsSorting statsSorting = StatsSorting.CREATIVE;
    private int currentPage;
    private Component leftPageIndicator;
    private Component rightPageIndicator;
@@ -49,25 +53,34 @@ public class IndexViewScreen extends Screen implements StatsUpdateListener {
    @Override
    public void onStatsUpdated() {
       if (!this.isLoading) return;
+      this.sortPages();
+   }
+
+   private void sortPages() {
       NonNullList<ItemStack> searchTabItems = NonNullList.create();
       CreativeModeTab.TAB_SEARCH.fillItemList(searchTabItems);
-      List<ItemStack> items = searchTabItems.stream().map(ItemStack::getItem).distinct().map(ItemStack::new).toList();
+      StatsCounter stats = this.minecraft.player.getStats();
+      List<Page.StatsItemEntry> entries = searchTabItems.stream().map(ItemStack::getItem).distinct().map(ItemStack::new).map(stack -> Page.StatsItemEntry.create(stack, stats, this.font)).sorted(this.statsSorting.comparing()).toList();
+      this.statsPages = this.createPages(entries);
+      this.setCurrentPage(0);
+   }
+
+   private List<Page> createPages(List<Page.StatsItemEntry> entries) {
       ImmutableList.Builder<Page> builder = ImmutableList.builder();
       Page page = null;
       int itemsCount = 0;
-      for (ItemStack item : items) {
+      for (Page.StatsItemEntry entry : entries) {
          if (page == null) {
             page = new Page();
             builder.add(page);
          }
-         page.items[itemsCount] = Page.StatsItemEntry.create(item, this.minecraft.player.getStats(), this.font);
+         page.items[itemsCount] = entry;
          if (++itemsCount >= 14) {
             itemsCount = 0;
             page = null;
          }
       }
-      this.statsPages = builder.build();
-      this.setCurrentPage(0);
+      return builder.build();
    }
 
    @Override
@@ -81,6 +94,7 @@ public class IndexViewScreen extends Screen implements StatsUpdateListener {
       }));
       this.addRenderableWidget(new ImageButton(this.leftPos + 316 - 17 - 16, this.topPos + 11, 16, 13, 62, 202, 20, INDEX_LOCATION, 512, 256, button -> {
          this.statsSorting = this.statsSorting.cycle();
+         this.sortPages();
       }, (Button button, PoseStack poseStack, int mouseX, int mouseY) -> {
          this.renderTooltip(poseStack, this.statsSorting.component, mouseX, mouseY);
       }, TextComponent.EMPTY));
@@ -114,7 +128,7 @@ public class IndexViewScreen extends Screen implements StatsUpdateListener {
    }
 
    private void incrementPage() {
-      if (this.currentPage < this.getAllPages()) this.setCurrentPage(this.currentPage + 1);
+      if (this.currentPage < this.getAllPages() - 1) this.setCurrentPage(this.currentPage + 1);
    }
 
    private void setCurrentPage(int newPage) {
@@ -148,28 +162,34 @@ public class IndexViewScreen extends Screen implements StatsUpdateListener {
       this.minecraft.setScreen(this.lastScreen);
    }
 
-   private class Page implements Widget {
+   public class Page implements Widget {
       final StatsItemEntry[] items = new StatsItemEntry[14];
+      @Nullable
+      private List<Component> tooltipLines;
 
       @Override
       public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
-         this.renderPageHalf(poseStack, mouseX, mouseY, partialTick, IndexViewScreen.this.leftPos + 16.0F, IndexViewScreen.this.topPos + 26.0F, 0, 7);
-         this.renderPageHalf(poseStack, mouseX, mouseY, partialTick, IndexViewScreen.this.leftPos + 167.0F, IndexViewScreen.this.topPos + 26.0F, 7, 14);
+         this.tooltipLines = null;
+         this.renderPageHalf(poseStack, mouseX, mouseY, partialTick, IndexViewScreen.this.leftPos + 16, IndexViewScreen.this.topPos + 26, 0, 7);
+         this.renderPageHalf(poseStack, mouseX, mouseY, partialTick, IndexViewScreen.this.leftPos + 167, IndexViewScreen.this.topPos + 26, 7, 14);
+         if (this.tooltipLines != null) {
+            renderTooltip(poseStack, this.tooltipLines, Optional.empty(), mouseX, mouseY);
+         }
       }
 
-      private void renderPageHalf(PoseStack poseStack, int mouseX, int mouseY, float partialTick, float startX, float startY, int startIndex, int endIndex) {
+      private void renderPageHalf(PoseStack poseStack, int mouseX, int mouseY, float partialTick, int startX, int startY, int startIndex, int endIndex) {
          poseStack.pushPose();
          poseStack.translate(startX, startY, 0.0F);
          for (int i = startIndex; i < endIndex; i++) {
             StatsItemEntry entry = this.items[i];
             if (entry == null) break;
-            entry.render(IndexViewScreen.this.minecraft, poseStack, mouseX, mouseY, partialTick);
+            entry.render(IndexViewScreen.this.minecraft, poseStack, mouseX - startX, mouseY - startY - i % 7 * 21, partialTick, getBlitOffset(), lines -> this.tooltipLines = lines);
             poseStack.translate(0.0F, 21.0F, 0.0F);
          }
          poseStack.popPose();
       }
 
-      private static final class StatsItemEntry {
+      public static class StatsItemEntry {
          private final ItemStack item;
          private final FormattedCharSequence displayName;
          private final boolean collected;
@@ -182,28 +202,38 @@ public class IndexViewScreen extends Screen implements StatsUpdateListener {
             this.tooltipLines = tooltipLines;
          }
 
+         public ItemStack getItem() {
+            return this.item;
+         }
+
+         public boolean isCollected() {
+            return this.collected;
+         }
+
          public static StatsItemEntry create(ItemStack stack, StatsCounter statsCounter, Font font) {
             int pickedUp = statsCounter.getValue(Stats.ITEM_PICKED_UP, stack.getItem());
             int crafted = statsCounter.getValue(Stats.ITEM_CRAFTED, stack.getItem());
             boolean collected = pickedUp > 0 || crafted > 0;
-            Style nameStyle = Style.EMPTY.withColor(collected ? ChatFormatting.GREEN : ChatFormatting.BLACK);
+            Style nameStyle = Style.EMPTY.withColor(collected ? 0x4BA52F : ChatFormatting.BLACK.getColor());
             Component displayName = stack.getItem().getName(stack);
             FormattedText formattedName;
             if (font.width(displayName) > 95) {
-               formattedName = FormattedText.composite(font.getSplitter().headByWidth(displayName, 95 - font.width("..."), nameStyle), FormattedText.of("..."));
+               formattedName = FormattedText.composite(font.getSplitter().headByWidth(displayName, 95 - font.width("..."), nameStyle), new TextComponent("...").withStyle(nameStyle));
             } else {
                formattedName = new TextComponent("").append(displayName).withStyle(nameStyle);
             }
             ImmutableList.Builder<Component> builder = ImmutableList.builder();
             builder.add(new TextComponent("").append(stack.getItem().getName(stack)).withStyle(stack.getRarity().color));
             if (pickedUp > 0) {
-               builder.add(new TextComponent(String.valueOf(pickedUp)).append(" ").append(new TranslatableComponent("stat.minecraft.picked_up")).withStyle(ChatFormatting.BLUE));
-               builder.add(new TextComponent(String.valueOf(crafted)).append(" ").append(new TranslatableComponent("stat.minecraft.crafted")).withStyle(ChatFormatting.BLUE));
+               builder.add(new TextComponent(String.valueOf(pickedUp)).append(" ").append(new TranslatableComponent("stat_type.minecraft.picked_up")).withStyle(ChatFormatting.BLUE));
             }
-            return new StatsItemEntry(stack, Language.getInstance().getVisualOrder(formattedName), collected, builder.build());
+            if (crafted > 0) {
+               builder.add(new TextComponent(String.valueOf(crafted)).append(" ").append(new TranslatableComponent("stat_type.minecraft.crafted")).withStyle(ChatFormatting.BLUE));
+            }
+            return new Page.StatsItemEntry(stack, Language.getInstance().getVisualOrder(formattedName), collected, builder.build());
          }
 
-         public void render(Minecraft minecraft, PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+         public void render(Minecraft minecraft, PoseStack poseStack, int mouseX, int mouseY, float partialTick, int blitOffset, Consumer<List<Component>> tooltipConsumer) {
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.setShaderTexture(0, INDEX_LOCATION);
@@ -211,8 +241,15 @@ public class IndexViewScreen extends Screen implements StatsUpdateListener {
             blit(poseStack, 124, 4, 120 + (this.collected ? 10 : 0), 198, 10, 10, 512, 256);
             RenderHelper.renderItemStackInGui(poseStack, this.item, 1, 1);
             minecraft.font.draw(poseStack, this.displayName, 23, 5, 0x000000);
+            if (this.isHovering(0, 0, 18, 18, mouseX, mouseY)) {
+               AbstractContainerScreen.renderSlotHighlight(poseStack, 1, 1, blitOffset);
+               tooltipConsumer.accept(this.tooltipLines);
+            }
          }
 
+         private boolean isHovering(int minX, int minY, int maxX, int maxY, int mouseX, int mouseY) {
+            return mouseX > minX && mouseX <= maxX && mouseY > minY && mouseY <= maxY;
+         }
       }
    }
 }
