@@ -238,7 +238,7 @@ public abstract class IndexViewScreen extends Screen {
          }).count();
          boolean collected = collectedCount == items.size();
          float collectionProgress = collectedCount / (float) items.size();
-         Component tooltipComponent = new TextComponent("").append(modName).append(new TextComponent(" (" + PERCENTAGE_FORMAT.format(collectionProgress) + "%)").withStyle(ChatFormatting.BLUE));
+         Component tooltipComponent = new TextComponent("").append(modName).append(new TextComponent(" (" + PERCENTAGE_FORMAT.format(collectionProgress * 100.0F) + "%)").withStyle(ChatFormatting.BLUE));
          return new ModItemEntry(displayItem, formatDisplayName(font, modName, collected), collected, List.of(tooltipComponent), new TextComponent(collectedCount + "/" + items.size()), collectionProgress);
       }
 
@@ -300,7 +300,6 @@ public abstract class IndexViewScreen extends Screen {
 
          public void renderForeground(Font font, PoseStack poseStack) {
             RenderHelper.renderItemStackInGui(poseStack, this.item, 1, 1);
-            font.draw(poseStack, this.displayName, 23, 5, 0x000000);
          }
       }
 
@@ -313,6 +312,12 @@ public abstract class IndexViewScreen extends Screen {
          @Override
          public <T extends Comparable<? super T>> T toComparableKey() {
             return (T) Registry.ITEM.getKey(this.item.getItem()).getPath();
+         }
+
+         @Override
+         public void renderForeground(Font font, PoseStack poseStack) {
+            super.renderForeground(font, poseStack);
+            font.draw(poseStack, this.displayName, 23, 5, 0x000000);
          }
       }
 
@@ -340,12 +345,13 @@ public abstract class IndexViewScreen extends Screen {
 
          @Override
          public void renderForeground(Font font, PoseStack poseStack) {
-            font.draw(poseStack, this.displayName, 70 - font.width(this.displayName) / 2, -3, 0x000000);
-            font.draw(poseStack, this.collection, 70 - font.width(this.collection) / 2 - 1, 7, 0x000000);
-            font.draw(poseStack, this.collection, 70 - font.width(this.collection) / 2, 7 - 1, 0x000000);
-            font.draw(poseStack, this.collection, 70 - font.width(this.collection) / 2, 7 + 1, 0x000000);
-            font.draw(poseStack, this.collection, 70 - font.width(this.collection) / 2 + 1, 7, 0x000000);
-            font.draw(poseStack, this.collection, 70 - font.width(this.collection) / 2, 7, 0xFFC700);
+            super.renderForeground(font, poseStack);
+            font.draw(poseStack, this.displayName, 70 - font.width(this.displayName) / 2, 0, 0x000000);
+            font.draw(poseStack, this.collection, 70 - font.width(this.collection) / 2 - 1, 10, 0x000000);
+            font.draw(poseStack, this.collection, 70 - font.width(this.collection) / 2, 10 - 1, 0x000000);
+            font.draw(poseStack, this.collection, 70 - font.width(this.collection) / 2, 10 + 1, 0x000000);
+            font.draw(poseStack, this.collection, 70 - font.width(this.collection) / 2 + 1, 10, 0x000000);
+            font.draw(poseStack, this.collection, 70 - font.width(this.collection) / 2, 10, 0xFFC700);
          }
       }
    }
