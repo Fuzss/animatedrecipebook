@@ -1,6 +1,8 @@
 package fuzs.completionistsindex.client.gui.screens.inventory;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import fuzs.completionistsindex.CompletionistsIndex;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.achievement.StatsUpdateListener;
 import net.minecraft.core.NonNullList;
@@ -17,16 +19,9 @@ import java.util.stream.Collectors;
 
 public class ModsIndexViewScreen extends IndexViewScreen implements StatsUpdateListener {
     private final Map<String, List<ItemStack>> allItemsByMod = getAllItemsByMod();
-    private boolean isLoading = true;
 
     public ModsIndexViewScreen(Screen lastScreen) {
         super(lastScreen);
-    }
-
-    @Override
-    public void onStatsUpdated() {
-        if (!this.isLoading) return;
-        this.rebuildPages();
     }
 
     @Override
@@ -39,8 +34,12 @@ public class ModsIndexViewScreen extends IndexViewScreen implements StatsUpdateL
 
     @Override
     protected void init() {
-        this.isLoading = true;
-        this.minecraft.getConnection().send(new ServerboundClientCommandPacket(ServerboundClientCommandPacket.Action.REQUEST_STATS));
+        if (CompletionistsIndex.CONFIG.client().skipSingleModScreen && this.allItemsByMod.size() == 1) {
+            this.minecraft.setScreen(new ItemsIndexViewScreen(this.lastScreen, Iterables.get(this.allItemsByMod.values(), 0)));
+        } else {
+            this.isLoading = true;
+            this.minecraft.getConnection().send(new ServerboundClientCommandPacket(ServerboundClientCommandPacket.Action.REQUEST_STATS));
+        }
         super.init();
     }
 

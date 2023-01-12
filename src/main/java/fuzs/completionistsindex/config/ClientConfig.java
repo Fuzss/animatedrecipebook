@@ -10,6 +10,8 @@ public class ClientConfig extends AbstractConfig {
     public boolean renderOffhandRing = false;
     @Config(description = "Show endurance bar for flying all the time, even when it is full.")
     public boolean alwaysRenderEnduranceBar = false;
+    @Config(description = "Skip showing the mods screen when only Minecraft is present (meaning there are no other mods that add any items, like when playing on a vanilla server, or all other items are blacklisted).")
+    public boolean skipSingleModScreen = false;
 
     public ClientConfig() {
         super("");

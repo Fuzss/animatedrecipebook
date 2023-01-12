@@ -11,12 +11,14 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.achievement.StatsUpdateListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.Registry;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.*;
+import net.minecraft.network.protocol.game.ServerboundClientCommandPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
@@ -31,10 +33,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class IndexViewScreen extends Screen {
+public abstract class IndexViewScreen extends Screen implements StatsUpdateListener {
    public static final ResourceLocation INDEX_LOCATION = CompletionistsIndex.id("textures/gui/index.png");
 
-   private final Screen lastScreen;
+   final Screen lastScreen;
+   boolean isLoading = true;
    private int leftPos;
    private int topPos;
    private Button turnPageBackwards;
@@ -53,6 +56,12 @@ public abstract class IndexViewScreen extends Screen {
       if (lastScreen instanceof IndexViewScreen indexViewScreen) {
          this.statsSorting = indexViewScreen.statsSorting;
       }
+   }
+
+   @Override
+   public void onStatsUpdated() {
+      if (!this.isLoading) return;
+      this.rebuildPages();
    }
 
    public Comparator<IndexViewPage.Entry> getComparator() {

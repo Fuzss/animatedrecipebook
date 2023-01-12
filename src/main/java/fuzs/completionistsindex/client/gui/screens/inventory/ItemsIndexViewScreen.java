@@ -1,6 +1,8 @@
 package fuzs.completionistsindex.client.gui.screens.inventory;
 
+import fuzs.completionistsindex.CompletionistsIndex;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.protocol.game.ServerboundClientCommandPacket;
 import net.minecraft.stats.StatsCounter;
 import net.minecraft.world.item.ItemStack;
 
@@ -12,6 +14,7 @@ public class ItemsIndexViewScreen extends IndexViewScreen {
     public ItemsIndexViewScreen(Screen lastScreen, List<ItemStack> items) {
         super(lastScreen);
         this.items = items;
+        this.isLoading = CompletionistsIndex.CONFIG.client().skipSingleModScreen;
     }
 
     @Override
@@ -24,7 +27,13 @@ public class ItemsIndexViewScreen extends IndexViewScreen {
 
     @Override
     protected void init() {
+        if (CompletionistsIndex.CONFIG.client().skipSingleModScreen) {
+            this.isLoading = true;
+            this.minecraft.getConnection().send(new ServerboundClientCommandPacket(ServerboundClientCommandPacket.Action.REQUEST_STATS));
+        }
         super.init();
-        this.rebuildPages();
+        if (!CompletionistsIndex.CONFIG.client().skipSingleModScreen) {
+            this.rebuildPages();
+        }
     }
 }
