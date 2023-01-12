@@ -1,5 +1,6 @@
 package fuzs.completionistsindex.client.handler;
 
+import fuzs.completionistsindex.client.gui.screens.inventory.AllModsIndexScreen;
 import fuzs.completionistsindex.client.gui.screens.inventory.IndexViewScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class PauseMenuHandler {
+public class IndexButtonHandler {
 
     public static void onScreenInit$Post(Screen screen, Minecraft minecraft, int width, int height, List<Widget> renderables, Consumer<AbstractWidget> addWidget) {
         int buttonX = width / 2 + 4 + 98 + 4;
@@ -30,7 +31,7 @@ public class PauseMenuHandler {
             }
         }
         addWidget.accept(new ImageButton(buttonX, buttonY, 20, 20, 80, 198, 20, IndexViewScreen.INDEX_LOCATION, 512, 256, button -> {
-            minecraft.setScreen(new IndexViewScreen(screen));
+            minecraft.setScreen(new AllModsIndexScreen(screen));
         }, TextComponent.EMPTY));
     }
 

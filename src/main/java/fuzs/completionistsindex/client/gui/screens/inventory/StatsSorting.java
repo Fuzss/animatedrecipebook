@@ -1,7 +1,6 @@
 package fuzs.completionistsindex.client.gui.screens.inventory;
 
 import com.google.common.collect.Ordering;
-import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 
@@ -21,11 +20,11 @@ public enum StatsSorting {
         return values[(this.ordinal() + 1) % values.length];
     }
 
-    public Comparator<IndexViewScreen.Page.StatsItemEntry> comparing() {
+    public Comparator<IndexViewScreen.IndexViewPage.Entry> getComparator() {
         return switch (this) {
             case CREATIVE -> Ordering.allEqual()::compare;
-            case ALPHABETICALLY -> Comparator.comparing(entry -> Registry.ITEM.getKey(entry.getItem().getItem()).getPath());
-            case COLLECTED -> Comparator.comparing(IndexViewScreen.Page.StatsItemEntry::isCollected).reversed().thenComparing(entry -> Registry.ITEM.getKey(entry.getItem().getItem()).getPath());
+            case ALPHABETICALLY -> Comparator.comparing(IndexViewScreen.IndexViewPage.Entry::toComparableKey);
+            case COLLECTED -> Comparator.comparing(IndexViewScreen.IndexViewPage.Entry::isCollected).reversed().thenComparing(IndexViewScreen.IndexViewPage.Entry::toComparableKey);
         };
     }
 }

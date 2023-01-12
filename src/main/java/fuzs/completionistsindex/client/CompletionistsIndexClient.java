@@ -10,8 +10,6 @@ import fuzs.puzzleslib.PuzzlesLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -47,7 +45,7 @@ public class CompletionistsIndexClient {
         MinecraftForge.EVENT_BUS.addListener((final ScreenEvent.InitScreenEvent.Post evt) -> {
             Screen screen = evt.getScreen();
             if (evt.getScreen() instanceof PauseScreen) {
-                PauseMenuHandler.onScreenInit$Post(screen, Minecraft.getInstance(), screen.width, screen.height, screen.renderables, evt::addListener);
+                IndexButtonHandler.onScreenInit$Post(screen, Minecraft.getInstance(), screen.width, screen.height, screen.renderables, evt::addListener);
             }
         });
         final FirstPersonWingsHandler firstPersonWingsHandler = new FirstPersonWingsHandler();
