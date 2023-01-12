@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class AllModsIndexScreen extends IndexViewScreen implements StatsUpdateListener {
+public class ModsIndexViewScreen extends IndexViewScreen implements StatsUpdateListener {
     private final Map<String, List<ItemStack>> allItemsByMod = getAllItemsByMod();
     private boolean isLoading = true;
 
-    public AllModsIndexScreen(Screen lastScreen) {
+    public ModsIndexViewScreen(Screen lastScreen) {
         super(lastScreen);
     }
 

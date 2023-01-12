@@ -10,6 +10,7 @@ import fuzs.puzzleslib.PuzzlesLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -24,11 +25,13 @@ import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = CompletionistsIndex.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class CompletionistsIndexClient {
+
     @SubscribeEvent
     public static void onConstructMod(final FMLConstructModEvent evt) {
         PuzzlesLib.setSideOnly();
         registerHandlers();
     }
+
     @SubscribeEvent
     public static void onClientSetup(final FMLClientSetupEvent evt) {
         SlotRendererHandler.init();
@@ -44,10 +47,21 @@ public class CompletionistsIndexClient {
     private static void registerHandlers() {
         MinecraftForge.EVENT_BUS.addListener((final ScreenEvent.InitScreenEvent.Post evt) -> {
             Screen screen = evt.getScreen();
+            if (evt.getScreen() instanceof InventoryScreen) {
+                IndexButtonHandler.onScreenInit$Post$1(screen, Minecraft.getInstance(), screen.width, screen.height, screen.renderables, evt::addListener);
+            }
             if (evt.getScreen() instanceof PauseScreen) {
-                IndexButtonHandler.onScreenInit$Post(screen, Minecraft.getInstance(), screen.width, screen.height, screen.renderables, evt::addListener);
+                IndexButtonHandler.onScreenInit$Post$2(screen, Minecraft.getInstance(), screen.width, screen.height, screen.renderables, evt::addListener);
             }
         });
+        MinecraftForge.EVENT_BUS.addListener((final ScreenEvent.MouseClickedEvent.Post evt) -> {
+            if (evt.getScreen() instanceof InventoryScreen && evt.wasHandled()) {
+                IndexButtonHandler.onMouseClicked$Post(evt.getScreen(), evt.getMouseX(), evt.getMouseY(), evt.getButton());
+            }
+        });
+//        final PauseMenuHandler pauseMenuHandler = new PauseMenuHandler();
+//        MinecraftForge.EVENT_BUS.addListener(pauseMenuHandler::onClientTick);
+//        MinecraftForge.EVENT_BUS.addListener(pauseMenuHandler::onInitGui);
         final FirstPersonWingsHandler firstPersonWingsHandler = new FirstPersonWingsHandler();
         MinecraftForge.EVENT_BUS.addListener(firstPersonWingsHandler::onRenderHand);
         final SweepingHandler sweepingHandler = new SweepingHandler();
